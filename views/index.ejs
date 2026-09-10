@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedrinho Outlet</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="brand">PEDRINHO OUTLET</div>
+    <div class="slogan">Seu novo padrão de estilo começa aqui.</div>
+  </header>
+
+  <div class="container">
+    <% if (!products.length) { %>
+      <div class="empty">Nenhum produto disponível no momento. Volte em breve!</div>
+    <% } else { %>
+      <div class="grid" id="product-grid">
+        <% products.forEach(function(p) { %>
+          <div class="product-card">
+            <div class="image-wrap">
+              <% if (p.image_url) { %>
+                <img src="<%= p.image_url %>" alt="<%= p.name %>" />
+              <% } else { %>
+                <span class="no-image">Sem foto</span>
+              <% } %>
+            </div>
+            <div class="info">
+              <% if (p.category) { %><div class="category"><%= p.category %></div><% } %>
+              <div class="name"><%= p.name %></div>
+              <% if (p.attributes && p.attributes.tamanhos && p.attributes.tamanhos.length) { %>
+                <select class="size-select">
+                  <% p.attributes.tamanhos.forEach(function(t) { %>
+                    <option value="<%= t %>"><%= t %></option>
+                  <% }) %>
+                </select>
+              <% } %>
+              <div class="price">R$ <%= Number(p.price).toFixed(2) %></div>
+              <button onclick="addToCart('<%= p.id %>', '<%= p.name.replace(/'/g, "\\'") %>', <%= p.price %>, this)">Adicionar</button>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+
+  <button class="cart-button" onclick="openCart()">
+    🛒 Carrinho <span class="count" id="cart-count">0</span>
+  </button>
+
+  <div class="overlay" id="cart-overlay">
+    <div class="panel">
+      <button class="close-btn" onclick="closeCart()">×</button>
+      <h2>Seu carrinho</h2>
+      <div id="cart-items"></div>
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cart-total">R$ 0,00</span>
+      </div>
+      <button class="btn" id="go-checkout" onclick="showCheckout()">Finalizar pedido</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="checkout-overlay">
+    <div class="panel">
+      <button class="close-btn" onclick="closeCheckout()">×</button>
+      <h2>Finalizar pedido</h2>
+      <div id="checkout-msg"></div>
+      <form id="checkout-form">
+        <div class="form-row">
+          <label>Nome completo</label>
+          <input type="text" id="customerName" required />
+        </div>
+        <div class="form-row">
+          <label>WhatsApp / contato</label>
+          <input type="text" id="customerContact" placeholder="(00) 00000-0000" />
+        </div>
+        <div class="form-row">
+          <label>Endereço para entrega (ou combine retirada)</label>
+          <textarea id="address" rows="2"></textarea>
+        </div>
+        <div class="form-row">
+          <label>Forma de pagamento</label>
+          <select id="paymentMethod">
+            <option value="Pix">Pix</option>
+            <option value="Cartão na entrega">Cartão na entrega</option>
+            <option value="Dinheiro">Dinheiro</option>
+          </select>
+        </div>
+        <button class="btn" type="submit">Confirmar pedido</button>
+        <button class="btn secondary" type="button" onclick="closeCheckout()">Voltar</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="site-footer">Pedrinho Outlet · Rua Tolentino Fernandes, nº 293 · Fale conosco pelo Instagram @outlet_pedrinho</footer>
+
+  <script src="/js/loja.js"></script>
+</body>
+</html>
