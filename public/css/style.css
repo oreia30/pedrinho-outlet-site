@@ -20,11 +20,46 @@ body {
 header.hero {
   background: var(--black);
   color: var(--white);
-  padding: 40px 24px 32px;
+  padding: 28px 24px 24px;
   text-align: center;
 }
+header.hero .header-inner { display: flex; align-items: center; justify-content: center; }
 header.hero .brand { font-size: 1.8rem; font-weight: 800; letter-spacing: 1px; }
-header.hero .slogan { color: var(--gray-200); margin-top: 6px; font-size: 0.95rem; }
+header.hero .logo { max-height: 72px; max-width: 260px; object-fit: contain; display: block; }
+header.hero .slogan { color: var(--gray-200); margin-top: 10px; font-size: 0.95rem; }
+
+.banner-wrap {
+  width: 100%;
+  aspect-ratio: 3.2 / 1;
+  background: var(--gray-100);
+  overflow: hidden;
+}
+.banner-wrap .banner { width: 100%; height: 100%; object-fit: cover; display: block; }
+@media (max-width: 640px) {
+  .banner-wrap { aspect-ratio: 4 / 3; }
+}
+
+.category-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+.cat-chip {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  color: var(--black);
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.cat-chip:hover { border-color: var(--black); }
+.cat-chip.active { background: var(--black); color: var(--white); border-color: var(--black); }
 
 .container { max-width: 1080px; margin: 0 auto; padding: 28px 20px 80px; }
 
