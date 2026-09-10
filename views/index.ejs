@@ -8,17 +8,38 @@
 </head>
 <body>
   <header class="hero">
-    <div class="brand">PEDRINHO OUTLET</div>
+    <div class="header-inner">
+      <% if (settings.logo_url) { %>
+        <img class="logo" src="<%= settings.logo_url %>" alt="Pedrinho Outlet" />
+      <% } else { %>
+        <div class="brand">PEDRINHO OUTLET</div>
+      <% } %>
+    </div>
     <div class="slogan">Seu novo padrão de estilo começa aqui.</div>
   </header>
 
+  <% if (settings.banner_url) { %>
+    <div class="banner-wrap">
+      <img class="banner" src="<%= settings.banner_url %>" alt="Promoção Pedrinho Outlet" />
+    </div>
+  <% } %>
+
   <div class="container">
+    <% if (categories.length) { %>
+      <div class="category-nav" id="category-nav">
+        <button type="button" class="cat-chip active" data-cat="">Todos</button>
+        <% categories.forEach(function(c) { %>
+          <button type="button" class="cat-chip" data-cat="<%= c.name %>"><%= c.name %></button>
+        <% }) %>
+      </div>
+    <% } %>
+
     <% if (!products.length) { %>
       <div class="empty">Nenhum produto disponível no momento. Volte em breve!</div>
     <% } else { %>
       <div class="grid" id="product-grid">
         <% products.forEach(function(p) { %>
-          <div class="product-card">
+          <div class="product-card" data-category="<%= p.category || '' %>">
             <div class="image-wrap">
               <% if (p.image_url) { %>
                 <img src="<%= p.image_url %>" alt="<%= p.name %>" />
@@ -42,6 +63,7 @@
           </div>
         <% }) %>
       </div>
+      <div class="empty" id="empty-filtered" hidden>Nenhum produto nessa categoria no momento.</div>
     <% } %>
   </div>
 
