@@ -121,3 +121,32 @@ document.getElementById('checkout-form').addEventListener('submit', async functi
 });
 
 renderCartCount();
+
+// Filtro de categorias — puramente no navegador, os produtos já vêm
+// todos renderizados na página; só mostra/esconde os cards.
+(function () {
+  const nav = document.getElementById('category-nav');
+  if (!nav) return;
+
+  const chips = Array.from(nav.querySelectorAll('.cat-chip'));
+  const cards = Array.from(document.querySelectorAll('#product-grid .product-card'));
+  const emptyMsg = document.getElementById('empty-filtered');
+
+  function applyFilter(category) {
+    let visibleCount = 0;
+    cards.forEach(function (card) {
+      const matches = !category || card.dataset.category === category;
+      card.hidden = !matches;
+      if (matches) visibleCount += 1;
+    });
+    if (emptyMsg) emptyMsg.hidden = visibleCount !== 0;
+  }
+
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      chips.forEach(function (c) { c.classList.remove('active'); });
+      chip.classList.add('active');
+      applyFilter(chip.dataset.cat);
+    });
+  });
+})();
