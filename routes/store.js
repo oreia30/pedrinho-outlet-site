@@ -5,13 +5,20 @@ const { SCHEMA } = require('../lib/migrate');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const { rows } = await pool.query(
+  const { rows: products } = await pool.query(
     `SELECT id, name, description, category, price, image_url, images, attributes
      FROM ${SCHEMA}.products
      WHERE active = true AND quantity > 0
      ORDER BY created_at DESC`
   );
-  res.render('index', { products: rows });
+  const { rows: settingsRows } = await pool.query(`SELECT * FROM ${SCHEMA}.store_settings WHERE id = 1`);
+  const { rows: categories } = await pool.query(`SELECT * FROM ${SCHEMA}.categories ORDER BY name ASC`);
+
+  res.render('index', {
+    products,
+    settings: settingsRows[0] || { banner_url: null, logo_url: null },
+    categories,
+  });
 });
 
 // Só produtos disponíveis — preço sempre vem do banco, nunca do cliente.
